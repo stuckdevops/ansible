@@ -1,0 +1,22 @@
+---
+# tasks file for ulimit
+- name: Change Comment /etc/security/limits.conf
+  lineinfile:
+    dest=/etc/security/limits.conf
+    regexp="^# Ansible changes."
+    line="# Ansible changes."
+  tags: [ulimit]
+
+- name: Change Soft Limit /etc/security/limits.conf
+  lineinfile:
+    dest=/etc/security/limits.conf
+    regexp="^\* soft nofile"
+    line="* soft  nofile {{ ulimit_number | default('65536') }}"
+  tags: [ulimit]
+
+- name: Change Hard Limit /etc/security/limits.conf
+  lineinfile:
+    dest=/etc/security/limits.conf
+    regexp="^\* hard  nofile"
+    line="* hard nofile {{ ulimit_number | default('65536') }}"
+  tags: [ulimit]

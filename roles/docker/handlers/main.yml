@@ -1,0 +1,7 @@
+---
+# handlers file for docker
+- name: Start Docker CE Service
+  service:
+    name: docker
+    state: restarted
+  listen: docker restart

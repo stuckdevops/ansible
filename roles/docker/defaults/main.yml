@@ -1,0 +1,43 @@
+---
+# defaults file for docker
+
+docker_state: present
+
+docker_compose_version: 1.20.1
+
+docker_cleanup_packages_EL:
+  - {package: "docker"}
+  - {package: "docker-common"}
+  - {package: "docker-client"}
+  - {package: "docker-engine"}
+
+docker_cleanup_packages_Ubuntu:
+  - {package: "docker.io"}
+  - {package: "docker-engine"}
+  - {package: "containerd"}
+
+docker_prerequisite_packages_EL:
+  - {package: "python-docker"}
+
+docker_prerequisite_packages_Ubuntu:
+  - {package: "apt-transport-https"}
+  - {package: "ca-certificates"}
+  - {package: "curl"}
+  - {package: "gnupg-curl"}
+  - {package: "software-properties-common"}
+  - {package: "python-docker"}
+  - {package: "python-pip"}
+
+docker_prerequisite_packages_Ubuntu_1404:
+  - {package: "linux-image-extra-{{ ansible_kernel }}"}
+  - {package: "linux-image-extra-virtual"}
+  - {package: "gnupg-curl"}
+  - {package: "curl"}
+  - {package: "python-pip"}
+
+apt_required_packages:
+  - {package: "python-pip"}
+  - {package: "python3-pip"}
+
+pip_required_packages:
+  - {package: "docker-py"}

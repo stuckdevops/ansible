@@ -1,0 +1,5 @@
+---
+- name: Launch Droplet 
+  hosts: digitalocean
+  roles:
+    - digitalocean 

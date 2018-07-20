@@ -1,0 +1,38 @@
+---
+- name: SSH Key to Access Droplet
+  digital_ocean:
+    state: present
+    command: ssh
+    name: engineer_key
+    ssh_pub_key: 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC7zT3WdKOn8NoWCtv37B4drNXOvFEJfjELvpD57zt8Itfrtwu9nEwa0MgKLpoQUwT8VMzsqsyzzFqMYnWRbFTmxhfnAYKlUP8qPp+eTEWq7D4VcpA6Cr/LTWnvWZexD8nCgPg9H2D3PN1w5gMFKiZwdnVpjSKmysjHmiruwqwsip9tJh/zd2Pcvlgu2Dnfmz43V0Rc52xB1mn/jwNT1D3tDzy+OAaPONlA3ghAlm/FgjkYSh8rCC6s0Kdu2SzAq6DwrziCh4+i82boM2Sw+yM4HcwGpTmI5tx3pnTFiBQnJq7kwWuCYEri6OlkKQLHDA986QPhI0Ls157eHDbJByJ1 khairul.zebua@infoos.net'
+    api_token: '{{ digitalocean_token }}'
+  tags: [ssh_key]
+
+- name: Launch New Droplet
+  digital_ocean:
+    state: present
+    command: droplet
+    name: '{{ droplet_name }}'
+    api_token: '{{ digitalocean_token }}'
+    size_id: '{{ droplet_size }}'
+    region_id: sgp1
+    image_id: ubuntu-16-04-x64
+    private_networking: yes
+    wait_timeout: 500
+    ssh_key_ids: 11009785
+  register: new_droplet
+  tags:
+    - launch_droplet
+    - droplet
+
+- debug:
+    msg: "Droplet ID is {{ new_droplet.droplet.id }}"
+  tags:
+    - launch_droplet
+    - droplet
+
+- debug:
+    msg: "Droplet IP Address is {{ new_droplet.droplet.ip_address }}"
+  tags:
+    - launch_droplet
+    - droplet

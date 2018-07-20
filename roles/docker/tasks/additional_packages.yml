@@ -1,0 +1,22 @@
+---
+- name: Install Required Packages via APT
+  apt:
+    name: "{{ item.package }}"
+    update_cache: yes
+  with_items: "{{ apt_required_packages }}"
+  tags: [docker,docker_additional_packages]
+
+- name: Install Required Packages via PIP
+  pip:
+    name: "{{ item.package }}"
+  with_items: "{{ pip_required_packages }}"
+  tags: [docker,docker_additional_packages]
+
+- name: Install Docker Compose via URL
+  get_url:
+    url: https://github.com/docker/compose/releases/download/{{ docker_compose_version | default(omit) }}/docker-compose-Linux-{{ ansible_architecture }}
+    dest: /usr/local/bin/docker-compose
+    owner: root
+    group: root
+    mode: "u+x,g+x,o+x"
+  tags: [docker,docker_compose]

@@ -1,0 +1,21 @@
+---
+# tasks file for docker-compose
+
+- name: Create compose-file dir
+  file: path=/opt/compose-file state=directory
+  tags:
+    - deploy-compose
+
+- name: Copy docker-compose.yml to server
+  copy: src="{{ item }}.yml" dest="/opt/compose-file/{{ item }}.yml"
+  with_items: "{{ docker_compose | default([]) }}"
+  tags:
+    - deploy-compose
+
+- name: Running compose-file on server
+  shell: "docker-compose -f {{ item }}.yml up -d"
+  args:
+    chdir: "/opt/compose-file"
+  with_items: "{{ docker_compose | default([]) }}"
+  tags:
+    - deploy-compose

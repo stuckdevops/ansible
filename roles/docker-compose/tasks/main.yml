@@ -1,0 +1,3 @@
+---
+# tasks file for docker-compose
+- import_tasks: deploy-compose-file.yml

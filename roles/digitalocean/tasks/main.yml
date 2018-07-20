@@ -1,0 +1,3 @@
+---
+# tasks file for digitalocean
+- import_tasks: launch.yml

@@ -1,0 +1,66 @@
+---
+- name: Remove Previous Docker Installation
+  apt:
+    name: "{{ item.package }}"
+    state: absent
+  with_items: "{{ docker_cleanup_packages_Ubuntu }}"
+  tags: [docker,docker_cleanup]
+
+- name: Install Prerequisite Packages
+  apt:
+    name: "{{ item.package }}"
+    state: present
+    update_cache: yes
+  with_items: "{{ docker_prerequisite_packages_Ubuntu }}"
+  when: ansible_distribution_version != '14.04'
+  tags: [docker,docker_packages]
+
+- name: Install Prerequisite Packages (for Ubuntu 14.04)
+  apt:
+    name: "{{ item.package }}"
+    state: present
+    update_cache: yes
+  with_items: "{{ docker_prerequisite_packages_Ubuntu_1404 }}"
+  when: ansible_distribution_version == '14.04'
+  tags: [docker,docker_packages]
+
+- name: Import Docker CE repository gpg key
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
+    id: 9DC858229FC7DD38854AE2D88D81803C0EBFCD88
+    validate_certs: no
+  when: ansible_distribution_version != '14.04'
+  tags: [docker,docker_repo]
+
+- name: Import Docker CE repository gpg key
+  shell: curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+  when: ansible_distribution_version == '14.04'
+  tags: [docker,docker_repo]
+
+- name: Add Docker CE Repository
+  apt_repository:
+    repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
+    state: present
+    update_cache: yes
+  tags: [docker,docker_repo]
+
+- name: Install Docker CE
+  apt:
+    name: docker-ce
+    state: present
+    update_cache: yes
+  tags: [docker,docker_install]
+
+- name: Remove Unnecessary Packages
+  apt:
+    autoclean: yes
+    autoremove: yes 
+  tags: [docker]
+
+- name: Enable Docker Service on Startup
+  service:
+    name: docker
+    state: reloaded
+    enabled: yes
+  tags: [docker,docker_service]

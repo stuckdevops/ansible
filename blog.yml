@@ -1,0 +1,11 @@
+---
+- name: WP Blog Setup 
+  hosts: blog
+  become: true
+  vars_files:
+    - "group_vars/blog"
+  roles:
+    - ulimit
+    - timezone
+    - docker
+    - docker-compose 

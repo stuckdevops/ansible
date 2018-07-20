@@ -1,0 +1,6 @@
+---
+# tasks file for timezone
+- name: Set Timezone
+  timezone:
+    name: "{{ timezone | default('Asia/Jakarta') }}"
+  tags: timezone 
