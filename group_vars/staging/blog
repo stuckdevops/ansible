@@ -1,0 +1,6 @@
+---
+app_config:
+  blog:
+    server_hostname: blog.domain.com
+
+worker_connections: 20000

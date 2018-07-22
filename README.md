@@ -34,6 +34,8 @@ So, Here I go. I'm asked to create a deployment script to manage the blog deploy
 
 # How to Deploy Docker Compose
 
-```ansible-playbook -i inventory.ini blog.yml --tag deploy-compose --extra-vars="docker_compose=blog"```
+```Env=staging/production```
+
+```ansible-playbook -i inventory.ini blog.yml --tag deploy-compose --extra-vars="docker_compose=blog env=$env"```
 
 - I'm Ready...
