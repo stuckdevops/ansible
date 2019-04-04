@@ -4,8 +4,6 @@
   become: true
   vars:
     appname: blog 
-  vars_files:
-    - "{{ env }}/group_vars/blog"
   roles:
     - ulimit
     - timezone
